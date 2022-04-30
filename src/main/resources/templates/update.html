@@ -20,14 +20,14 @@
     <label for="email">Enter email: </label>
     <input type="text" th:field="*{email}" id="email" placeholder="email"/>
     <br/>
-    <label for="pass">Enter password: </label>
-    <input type="text" th:field="*{password}" id="pass" placeholder="password"/>
+    <label for="password">Enter password: </label>
+    <input type="text" name="pass" id="password" placeholder="password"/>
     <br/>
     <label for="roles">Сhoose roles: </label>
     <br/>
-    <select name="roles" id="roles" size="2" multiple>
-        <option type="text" value="ROLE_ADMIN">ADMIN</option>
-        <option type="text" value="ROLE_ADMIN">USER</option>
+    <select name="rolesList" id="roles" size="2" multiple>
+        <option th:value="'ROLE_ADMIN'" th:text="ADMIN"></option>
+        <option th:value="'ROLE_USER'" th:text="USER"></option>
     </select>
     <br/>
     <input type="submit" value="Update">

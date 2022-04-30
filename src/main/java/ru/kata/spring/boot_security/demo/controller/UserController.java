@@ -2,12 +2,12 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -22,6 +22,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/user")
     public String user(ModelMap model, Principal principal) {
@@ -41,8 +44,12 @@ public class UserController {
         return "new";
     }
 
-    @PostMapping
-    public String addUser (@ModelAttribute("user") User user, @RequestParam(value = "roles") String [] roles) {
+    @PostMapping("/admin")
+    public String addUser (@ModelAttribute("user") User user,
+                           @RequestParam(value = "rolesList") String [] roles,
+                           @ModelAttribute("pass") String pass) {
+
+        user.setPassword(passwordEncoder.encode(pass));
         user.setRoles(Arrays.stream(roles)
                 .map(role -> roleService.findByRole(role))
                 .collect(Collectors.toList()));
@@ -58,7 +65,10 @@ public class UserController {
 
     @PatchMapping("/admin/{id}")
     public String update (@ModelAttribute("user") User user, @PathVariable("id") int id,
-                          @RequestParam(value = "roles") String [] roles) {
+                          @RequestParam(value = "rolesList") String [] roles,
+                          @ModelAttribute("pass") String pass) {
+
+        user.setPassword(passwordEncoder.encode(pass));
         user.setRoles(Arrays.stream(roles)
                 .map(role -> roleService.findByRole(role))
                 .collect(Collectors.toList()));
