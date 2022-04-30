@@ -5,7 +5,9 @@
     <title>New user</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/users}" th:object="${user}">
+<a th:href="@{/logout}">Logout</a>
+<br><br>
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
     <label for="first_name">Enter First name:  </label>
     <input type="text" th:field="*{firstName}" id="first_name" placeholder="first name"/>
     <br/>
@@ -20,6 +22,13 @@
     <br/>
     <label for="pass">Enter password: </label>
     <input type="text" th:field="*{password}" id="pass" placeholder="password"/>
+    <br/>
+    <label for="roles">Сhoose roles: </label>
+    <br/>
+    <select name="roles" id="roles" size="2" multiple>
+        <option type="text" value="ROLE_ADMIN">ADMIN</option>
+        <option type="text" value="ROLE_USER">USER</option>
+    </select>
     <br/>
     <input type="submit" value="Create">
 </form>
