@@ -6,8 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping("/user")
     public String user(ModelMap model, Principal principal) {
@@ -40,7 +44,7 @@ public class UserController {
     @PostMapping
     public String addUser (@ModelAttribute("user") User user, @RequestParam(value = "roles") String [] roles) {
         user.setRoles(Arrays.stream(roles)
-                .map(role -> new Role(role))
+                .map(role -> roleService.findByRole(role))
                 .collect(Collectors.toList()));
         userService.save(user);
         return "redirect:/admin";
@@ -53,7 +57,11 @@ public class UserController {
     }
 
     @PatchMapping("/admin/{id}")
-    public String update (@ModelAttribute("user") User user, @PathVariable("id") int id) {
+    public String update (@ModelAttribute("user") User user, @PathVariable("id") int id,
+                          @RequestParam(value = "roles") String [] roles) {
+        user.setRoles(Arrays.stream(roles)
+                .map(role -> roleService.findByRole(role))
+                .collect(Collectors.toList()));
         userService.update(user, id);
         return "redirect:/admin";
     }
