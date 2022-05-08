@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.configs;
+package ru.kata.spring.boot_security.demo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,6 @@ public class DbInit {
 
         String[] rolesUser = {"ROLE_USER"};
         userService.save(new User("user", "user", 42, "user"),
-                rolesUser, "admin");
+                rolesUser, "user");
     }
 }

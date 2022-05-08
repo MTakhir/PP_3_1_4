@@ -30,13 +30,7 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
-
-    @PostMapping("")
+    @PostMapping()
     public String addUser (@ModelAttribute("user") User user,
                            @RequestParam(value = "rolesList") String [] roles,
                            @ModelAttribute("pass") String pass) {
@@ -45,24 +39,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/update")
-    public String  edit (Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.findUser(id));
-        return "update";
-    }
-
     @PatchMapping("/{id}")
     public String update (@ModelAttribute("user") User user, @PathVariable("id") int id,
                           @RequestParam(value = "rolesList") String [] roles,
                           @ModelAttribute("pass") String pass) {
         userService.update(user, id, roles, pass);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/{id}/delete")
-    public String  deleteModal (Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.findUser(id));
-        return "admin";
     }
 
     @DeleteMapping("/{id}")
