@@ -63,24 +63,19 @@
                                             <th scope="col">Delete</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr th:each="user : ${users}">
-                                            <td th:utext="${user.getId()}">id</td>
-                                            <td th:utext="${user.getFirstName()}">First name</td>
-                                            <td th:utext="${user.getLastName()}">Last name</td>
-                                            <td th:utext="${user.getAge()}">Age</td>
-                                            <td th:utext="${user.getEmail}">Email</td>
-                                            <td><span th:each="roles : ${user.getRoles()}"
-                                                      th:utext= "${roles.toString()}+'   '">Roles</span></td>
+                                    <tbody id="tableAllUsers">
+                                        <tr>
+                                            <td>id</td>
+                                            <td>First name</td>
+                                            <td>Last name</td>
+                                            <td>Age</td>
+                                            <td>Email</td>
+                                            <td><span >Roles</span></td>
                                             <td>
-                                                <button class="btn btn-info" data-toggle="modal"
-                                                        th:attr="data-target=${'#editModal'+user.getId()}"
-                                                        th:data-row="${user}">Edit</button>
+                                                <button class="btn btn-info" data-toggle="modal">Edit</button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger" data-toggle="modal"
-                                                        th:attr="data-target=${'#deleteModal'+user.getId()}"
-                                                        th:data-row="${user}">Delete</button>
+                                                <button class="btn btn-danger" data-toggle="modal">Delete</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -254,6 +249,7 @@
     </div>
 </div>
 
+<script type="text/javascript" th:src="@{main.js}" src="../static/main.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
