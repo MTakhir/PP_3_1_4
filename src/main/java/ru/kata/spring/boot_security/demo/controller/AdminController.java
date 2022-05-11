@@ -21,7 +21,9 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String allUsers() {
+    public String allUsers(ModelMap model, Principal principal) {
+        User admin = userService.findByEmail(principal.getName());
+        model.addAttribute("admin", admin);
         return "admin";
     }
 
