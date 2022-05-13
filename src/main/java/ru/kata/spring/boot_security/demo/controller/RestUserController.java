@@ -19,7 +19,7 @@ public class RestUserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping()
     public User user(Principal principal) {
         return userService.findByEmail(principal.getName());
     }
