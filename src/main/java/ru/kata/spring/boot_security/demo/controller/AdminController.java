@@ -21,9 +21,7 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String allUsers(ModelMap model, Principal principal) {
-        User admin = userService.findByEmail(principal.getName());
-        model.addAttribute("admin", admin);
+    public String allUsers() {
         return "admin";
     }
 
@@ -36,17 +34,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PatchMapping("/{id}")
-    public String update (@ModelAttribute("user") User user, @PathVariable("id") int id,
-                          @RequestParam(value = "rolesList") String [] roles,
-                          @ModelAttribute("pass") String pass) {
-        userService.update(user, id, roles, pass);
-        return "redirect:/admin";
-    }
 
-    @DeleteMapping("/{id}")
-    public String delete (@PathVariable("id") int id) {
-        userService.delete(id);
-        return "redirect:/admin";
-    }
+
+
 }

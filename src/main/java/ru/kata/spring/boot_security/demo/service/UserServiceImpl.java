@@ -52,12 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(User user, int id, String[] roles, String pass) {
-        user.setId(id);
+    public void update(User user) {
+        String pass = user.getPassword();
         user.setPassword(passwordEncoder.encode(pass));
-        user.setRoles(Arrays.stream(roles)
-                .map(role -> roleService.findByRole(role))
-                .collect(Collectors.toList()));
         userDao.update(user);
     }
 

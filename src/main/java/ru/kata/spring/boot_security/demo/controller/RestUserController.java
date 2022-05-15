@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/info")
@@ -23,4 +25,5 @@ public class RestUserController {
     public User user(Principal principal) {
         return userService.findByEmail(principal.getName());
     }
+
 }

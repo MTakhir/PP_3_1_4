@@ -9,6 +9,6 @@ public interface UserService {
     void save(User user, String[] roles, String pass);
     User findUser(int id);
     User findByEmail(String email);
-    void update(User user, int id, String[] roles, String pass);
+    void update(User user);
     void delete(int id);
 }
