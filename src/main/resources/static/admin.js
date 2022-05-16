@@ -62,28 +62,23 @@ addNewUser.addEventListener('submit', (e) => {
         .call(rolesList.options, option => option.selected)
         .map(option => option.text)
 
-    let formData = new FormData()
-    formData.append('text', JSON.stringify({
-        firstName:firstName.value,
-        lastName:lastName.value,
-        age:age.value,
-        email:email.value,
-        password:pass.value,
-
-    }))
-    formData.append('text', JSON.stringify(rolesListSelected))
-
     fetch('http://localhost:8080/users', {
         method: 'POST',
         headers: {
             'Content-Type':'application/json'
         },
-        body: formData
+        body: JSON.stringify({
+            firstName:firstName.value,
+            lastName:lastName.value,
+            age:age.value,
+            email:email.value,
+            password:pass.value,
+            roles: rolesListSelected
+        })
     })
         .then(response => response.json())
         .then(data => {
             const addUser = []
-            console.log(data)
             addUser.push(data)
         })
 })
