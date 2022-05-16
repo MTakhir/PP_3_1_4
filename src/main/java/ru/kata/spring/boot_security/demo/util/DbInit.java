@@ -26,11 +26,11 @@ public class DbInit {
         roleService.save(new Role("ROLE_USER"));
 
         String[] rolesAdmin = {"ROLE_ADMIN", "ROLE_USER"};
-        userService.save(new User("admin", "admin", 42, "admin"),
+        userService.addUser(new User("admin", "admin", 42, "admin"),
                 rolesAdmin, "admin");
 
         String[] rolesUser = {"ROLE_USER"};
-        userService.save(new User("user", "user", 42, "user"),
+        userService.addUser(new User("user", "user", 42, "user"),
                 rolesUser, "user");
     }
 }

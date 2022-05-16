@@ -32,14 +32,21 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void save(User user, String[] roles, String pass) {
+    public void save(User user) {
+        String pass = user.getPassword();
+        user.setPassword(passwordEncoder.encode(pass));
+        userDao.save(user);
+    }
+
+    @Transactional
+    @Override
+    public void addUser(User user, String[] roles, String pass) {
         user.setPassword(passwordEncoder.encode(pass));
         user.setRoles(Arrays.stream(roles)
                 .map(role -> roleService.findByRole(role))
                 .collect(Collectors.toList()));
         userDao.save(user);
     }
-
     @Override
     public User findUser(int id) {
         return userDao.findUser(id);

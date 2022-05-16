@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import java.security.Principal;
 import java.util.List;
 
@@ -28,11 +27,17 @@ public class RestAdminController {
     public User navBar(Principal principal) {
         return userService.findByEmail(principal.getName());
     }
+
+    @PostMapping()
+    public void addUser (@RequestBody User user) {
+        userService.save(user);
+    }
+
     @PatchMapping()
     public void update (@RequestBody User user) {
         userService.update(user);
-
     }
+
     @DeleteMapping("/{id}")
     public void delete (@PathVariable("id") int id) {
         userService.delete(id);

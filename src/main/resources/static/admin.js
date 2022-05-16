@@ -54,6 +54,40 @@ const on = (element, event, selector, handler) => {
     })
 }
 
+//Add new user
+addNewUser.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const rolesList = document.querySelector('#roles')
+    const rolesListSelected = [].filter
+        .call(rolesList.options, option => option.selected)
+        .map(option => option.text)
+
+    let formData = new FormData()
+    formData.append('text', JSON.stringify({
+        firstName:firstName.value,
+        lastName:lastName.value,
+        age:age.value,
+        email:email.value,
+        password:pass.value,
+
+    }))
+    formData.append('text', JSON.stringify(rolesListSelected))
+
+    fetch('http://localhost:8080/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            const addUser = []
+            console.log(data)
+            addUser.push(data)
+        })
+})
+
 //Edit Modal
 on(document, 'click', '.eBtn', e => {
     const line1 = e.target.parentNode.parentNode
@@ -73,30 +107,32 @@ on(document, 'click', '.eBtn', e => {
 
 editModal.addEventListener('submit', (e) => {
     e.preventDefault()
-    const roles = document.querySelector('#rolesEdit')
-    const rolesList = [].filter
-        .call(roles.options, option => option.selected)
+    const rolesList = document.querySelector('#rolesEdit')
+    const rolesListSelected = [].filter
+        .call(rolesList.options, option => option.selected)
         .map(option => option.text)
 
-    fetch(url3+idEdit.value, {
+    let formDataEdit = new FormData()
+    formDataEdit.append('text', JSON.stringify({
+        id:idEdit.value,
+        firstName:firstNameEdit.value,
+        lastName:lastNameEdit.value,
+        age:ageEdit.value,
+        email:emailEdit.value,
+        password:passEdit.value,
+    }))
+    formDataEdit.append('text', JSON.stringify(rolesListSelected))
+    fetch(url2, {
         method: 'PATCH',
         headers: {
             'Content-Type':'application/json'
         },
-        body: JSON.stringify({
-            id:idEdit.value,
-            firstName:firstNameEdit.value,
-            lastName:lastNameEdit.value,
-            age:ageEdit.value,
-            password:passEdit.value,
-            poles: rolesList
-        })
+        body: formDataEdit
     })
         .then(response => response.json())
         .then(data => {
             const editUser = []
-
-
+            editUser.push(data)
         })
 
 })
