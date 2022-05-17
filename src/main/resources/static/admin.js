@@ -54,7 +54,6 @@ const on = (element, event, selector, handler) => {
 }
 
 //Add new user
-
 addNewUser.addEventListener('submit', (e) => {
     e.preventDefault()
     let rolesList = [];
