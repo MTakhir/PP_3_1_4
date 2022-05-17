@@ -19,7 +19,6 @@ fetch(url1)
 
 //Admin Panel
 let table = ""
-
 const showTable = (users) => {
     users.forEach((user)=> {
         table += `
@@ -55,82 +54,88 @@ const on = (element, event, selector, handler) => {
 }
 
 //Add new user
+
 addNewUser.addEventListener('submit', (e) => {
     e.preventDefault()
-    const rolesList = document.querySelector('#roles')
-    const rolesListSelected = [].filter
-        .call(rolesList.options, option => option.selected)
-        .map(option => option.text)
+    let rolesList = [];
+    for(let i = 0; i < $('#roles').val().length; i++){
+        rolesList[i] = {role: $('#roles').val()[i]} ;
+    }
+    console.log(rolesList)
 
+    let newUser = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        age: age.value,
+        email: email.value,
+        password: pass.value,
+        roles: rolesList
+    }
+    console.log(newUser)
     fetch('http://localhost:8080/users', {
         method: 'POST',
         headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            firstName:firstName.value,
-            lastName:lastName.value,
-            age:age.value,
-            email:email.value,
-            password:pass.value,
-            roles: rolesListSelected
-        })
+        body: JSON.stringify(newUser)
     })
-        .then(response => response.json())
-        .then(data => {
-            const addUser = []
-            addUser.push(data)
-        })
+        // .then(response => response.json())
+        // .then(data1 => {
+        //
+        //     const newUser = []
+        //     newUser.push(data1)
+        //     showTable(newUser)
+        // })
 })
 
 //Edit Modal
-on(document, 'click', '.eBtn', e => {
-    const line1 = e.target.parentNode.parentNode
-    const id1 = line1.children[0].innerHTML
-    const firstName1 = line1.children[1].innerHTML
-    const lastName1 = line1.children[2].innerHTML
-    const age1 = line1.children[3].innerHTML
-    const email1 = line1.children[4].innerHTML
 
-    idEdit.value = id1
-    firstNameEdit.value = firstName1
-    lastNameEdit.value = lastName1
-    ageEdit.value = age1
-    emailEdit.value = email1
-    $('#editModal').modal()
-})
-
-editModal.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const rolesList = document.querySelector('#rolesEdit')
-    const rolesListSelected = [].filter
-        .call(rolesList.options, option => option.selected)
-        .map(option => option.text)
-
-    let formDataEdit = new FormData()
-    formDataEdit.append('text', JSON.stringify({
-        id:idEdit.value,
-        firstName:firstNameEdit.value,
-        lastName:lastNameEdit.value,
-        age:ageEdit.value,
-        email:emailEdit.value,
-        password:passEdit.value,
-    }))
-    formDataEdit.append('text', JSON.stringify(rolesListSelected))
-    fetch(url2, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type':'application/json'
-        },
-        body: formDataEdit
-    })
-        .then(response => response.json())
-        .then(data => {
-            const editUser = []
-            editUser.push(data)
-        })
-
-})
+// on(document, 'click', '.eBtn', e => {
+//     const line1 = e.target.parentNode.parentNode
+//     const id1 = line1.children[0].innerHTML
+//     const firstName1 = line1.children[1].innerHTML
+//     const lastName1 = line1.children[2].innerHTML
+//     const age1 = line1.children[3].innerHTML
+//     const email1 = line1.children[4].innerHTML
+//
+//     idEdit.value = id1
+//     firstNameEdit.value = firstName1
+//     lastNameEdit.value = lastName1
+//     ageEdit.value = age1
+//     emailEdit.value = email1
+//     $('#editModal').modal()
+// })
+//
+// editModal.addEventListener('submit', (e) => {
+//     e.preventDefault()
+//     const roles = document.querySelector('#rolesEdit')
+//     const rolesList = [].filter
+//         .call(roles.options, option => option.selected)
+//         .map(option => option.text)
+//
+//     let formDataEdit = new FormData()
+//     formDataEdit.append('text', JSON.stringify({
+//         id:idEdit.value,
+//         firstName:firstNameEdit.value,
+//         lastName:lastNameEdit.value,
+//         age:ageEdit.value,
+//         email:emailEdit.value,
+//         password:passEdit.value,
+//     }))
+//     formDataEdit.append('text', JSON.stringify(rolesListSelected))
+//     fetch(url2, {
+//         method: 'PATCH',
+//         headers: {
+//             'Content-Type':'application/json'
+//         },
+//         body: formDataEdit
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             const editUser = []
+//             editUser.push(data)
+//         })
+// })
 
 //Delete Modal
 on(document, 'click', '.dBtn', e => {
@@ -149,9 +154,11 @@ on(document, 'click', '.dBtn', e => {
 })
 
 deleteModal.addEventListener('submit', (e) => {
+    e.preventDefault()
     fetch(url3+idDelete.value, {
         method: 'DELETE'
     })
-        .then(res => res.json())
-        .then(() => location.reload())
+        .then(() => {
+            let tr = document.getElementById(idDelete.value).remove()
+        })
 })
