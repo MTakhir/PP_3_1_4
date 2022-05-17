@@ -27,7 +27,6 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "roles")
 
-    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 

@@ -16,7 +16,7 @@ public class Role implements GrantedAuthority {
     @Column(unique = true)
     private String role;
 
-    @JsonBackReference
+    @Transient
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 

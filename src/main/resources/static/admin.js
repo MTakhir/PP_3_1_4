@@ -54,14 +54,19 @@ const on = (element, event, selector, handler) => {
 }
 
 //Add new user
-addNewUser.addEventListener('submit', (e) => {
+let newUserForm = document.getElementById('newUserForm')
+newUserForm.addEventListener('submit', (e) => {
     e.preventDefault()
+    let id = 0
     let rolesList = [];
     for(let i = 0; i < $('#roles').val().length; i++){
-        rolesList[i] = {role: $('#roles').val()[i]} ;
+        if ($('#roles').val()[i]==='ROLE_ADMIN') {
+            id=1
+        } else {
+            id=2
+        }
+        rolesList[i] = {id: id, role: $('#roles').val()[i]} ;
     }
-    console.log(rolesList)
-
     let newUser = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -70,7 +75,6 @@ addNewUser.addEventListener('submit', (e) => {
         password: pass.value,
         roles: rolesList
     }
-    console.log(newUser)
     fetch('http://localhost:8080/users', {
         method: 'POST',
         headers: {
@@ -78,13 +82,12 @@ addNewUser.addEventListener('submit', (e) => {
         },
         body: JSON.stringify(newUser)
     })
-        // .then(response => response.json())
-        // .then(data1 => {
-        //
-        //     const newUser = []
-        //     newUser.push(data1)
-        //     showTable(newUser)
-        // })
+        .then(response => response.json())
+        .then(data => {
+            const newUser = []
+            newUser[0] =data
+            showTable(data)
+        })
 })
 
 //Edit Modal
@@ -157,7 +160,6 @@ deleteModal.addEventListener('submit', (e) => {
     fetch(url3+idDelete.value, {
         method: 'DELETE'
     })
-        .then(() => {
-            let tr = document.getElementById(idDelete.value).remove()
-        })
+        .then(() => document.getElementById(idDelete.value).remove())
+        .then(()=> document.getElementById('deleteModalClose').click())
 })
