@@ -31,9 +31,8 @@ public class RestAdminController {
     }
 
     @PostMapping()
-    public User addUser (@RequestBody User user) {
+    public void addUser (@RequestBody User user) {
         userService.save(user);
-        return user;
     }
 
 
