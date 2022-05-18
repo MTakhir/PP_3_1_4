@@ -54,7 +54,6 @@ const on = (element, event, selector, handler) => {
 }
 
 //Add new user
-let newUserForm = document.getElementById('newUserForm')
 newUserForm.addEventListener('submit', (e) => {
     e.preventDefault()
     let id = 0
@@ -75,7 +74,7 @@ newUserForm.addEventListener('submit', (e) => {
         password: pass.value,
         roles: rolesList
     }
-    fetch('http://localhost:8080/users', {
+    fetch(url2, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -83,75 +82,82 @@ newUserForm.addEventListener('submit', (e) => {
         body: JSON.stringify(newUser)
     })
         .then(response => response.json())
-        .then(data => {
-            const newUser = []
-            newUser[0] =data
-            showTable(data)
+        .then((data) => {
+            const newUserInTable = []
+            newUserInTable.push(data)
+            showTable(newUserInTable)
         })
+        .then(() => document.getElementById('userTable').click())
 })
 
 //Edit Modal
+on(document, 'click', '.eBtn', e => {
+    const lineEdit = e.target.parentNode.parentNode
+    const idEditModal = lineEdit.children[0].innerHTML
+    const firstNameEditModal = lineEdit.children[1].innerHTML
+    const lastNameEditModal = lineEdit.children[2].innerHTML
+    const ageEditModal = lineEdit.children[3].innerHTML
+    const emailEditModal = lineEdit.children[4].innerHTML
 
-// on(document, 'click', '.eBtn', e => {
-//     const line1 = e.target.parentNode.parentNode
-//     const id1 = line1.children[0].innerHTML
-//     const firstName1 = line1.children[1].innerHTML
-//     const lastName1 = line1.children[2].innerHTML
-//     const age1 = line1.children[3].innerHTML
-//     const email1 = line1.children[4].innerHTML
-//
-//     idEdit.value = id1
-//     firstNameEdit.value = firstName1
-//     lastNameEdit.value = lastName1
-//     ageEdit.value = age1
-//     emailEdit.value = email1
-//     $('#editModal').modal()
-// })
-//
-// editModal.addEventListener('submit', (e) => {
-//     e.preventDefault()
-//     const roles = document.querySelector('#rolesEdit')
-//     const rolesList = [].filter
-//         .call(roles.options, option => option.selected)
-//         .map(option => option.text)
-//
-//     let formDataEdit = new FormData()
-//     formDataEdit.append('text', JSON.stringify({
-//         id:idEdit.value,
-//         firstName:firstNameEdit.value,
-//         lastName:lastNameEdit.value,
-//         age:ageEdit.value,
-//         email:emailEdit.value,
-//         password:passEdit.value,
-//     }))
-//     formDataEdit.append('text', JSON.stringify(rolesListSelected))
-//     fetch(url2, {
-//         method: 'PATCH',
-//         headers: {
-//             'Content-Type':'application/json'
-//         },
-//         body: formDataEdit
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             const editUser = []
-//             editUser.push(data)
-//         })
-// })
+    idEdit.value = idEditModal
+    firstNameEdit.value = firstNameEditModal
+    lastNameEdit.value = lastNameEditModal
+    ageEdit.value = ageEditModal
+    emailEdit.value = emailEditModal
+    $('#editModal').modal()
+})
+
+editModal.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let id = 0
+    let rolesListEdit = [];
+    for(let i = 0; i < $('#rolesEdit').val().length; i++){
+        if ($('#rolesEdit').val()[i]==='ROLE_ADMIN') {
+            id=1
+        } else {
+            id=2
+        }
+        rolesListEdit[i] = {id: id, role: $('#rolesEdit').val()[i]} ;
+    }
+    let editUser = {
+        id: idEdit.value,
+        firstName: firstNameEdit.value,
+        lastName: lastNameEdit.value,
+        age: ageEdit.value,
+        email: emailEdit.value,
+        password: passEdit.value,
+        roles: rolesListEdit
+    }
+    fetch(url2, {
+        method: 'PUT',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(editUser)
+    })
+        .then(response => response.json())
+        .then(data => {
+            const editUserInTable = []
+            editUserInTable.push(data)
+            showTable(editUserInTable)
+        })
+        .then(()=> document.getElementById(idEdit.value).remove())
+        .then(()=> document.getElementById('editModalClose').click())
+})
 
 //Delete Modal
 on(document, 'click', '.dBtn', e => {
-    const line2 = e.target.parentNode.parentNode
-    const id2 = line2.children[0].innerHTML
-    const firstName2 = line2.children[1].innerHTML
-    const lastName2 = line2.children[2].innerHTML
-    const age2 = line2.children[3].innerHTML
-    const email2 = line2.children[3].innerHTML
-    idDelete.value = id2
-    firstNameDelete.value = firstName2
-    lastNameDelete.value = lastName2
-    ageDelete.value = age2
-    emailDelete.value = email2
+    const lineDelete = e.target.parentNode.parentNode
+    const idDeleteModal = lineDelete.children[0].innerHTML
+    const firstNameDeleteModal = lineDelete.children[1].innerHTML
+    const lastNameDeleteModal = lineDelete.children[2].innerHTML
+    const ageDeleteModal = lineDelete.children[3].innerHTML
+    const emailDeleteModal = lineDelete.children[3].innerHTML
+    idDelete.value = idDeleteModal
+    firstNameDelete.value = firstNameDeleteModal
+    lastNameDelete.value = lastNameDeleteModal
+    ageDelete.value = ageDeleteModal
+    emailDelete.value = emailDeleteModal
     $('#deleteModal').modal()
 })
 
