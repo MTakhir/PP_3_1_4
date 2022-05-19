@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -19,29 +21,30 @@ public class RestAdminController {
     }
 
     @GetMapping()
-    public List<User> allUsersRest() {
-        return userService.getUsers();
+    public ResponseEntity<List<User>> allUsersRest() {
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/user")
-    public User navBar(Principal principal) {
-        return userService.findByEmail(principal.getName());
+    public ResponseEntity<User> navBar(Principal principal) {
+        return new ResponseEntity<>(userService.findByEmail(principal.getName()),HttpStatus.OK);
     }
 
     @PostMapping()
-    public User addUser (@RequestBody User user) {
+    public ResponseEntity<User> addUser (@RequestBody User user) {
         userService.save(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public User update (@RequestBody User user) {
+    public ResponseEntity<User> update (@RequestBody User user) {
         userService.update(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void delete (@PathVariable("id") int id) {
+    public ResponseEntity<Integer> delete (@PathVariable("id") int id) {
         userService.delete(id);
+        return new ResponseEntity<>(id,HttpStatus.NO_CONTENT);
     }
 }
