@@ -47,4 +47,5 @@ public class RestAdminController {
         userService.delete(id);
         return new ResponseEntity<>(id,HttpStatus.NO_CONTENT);
     }
+
 }

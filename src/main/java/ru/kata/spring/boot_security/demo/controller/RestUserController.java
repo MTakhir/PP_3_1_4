@@ -25,5 +25,4 @@ public class RestUserController {
     public ResponseEntity<User> user(Principal principal) {
         return new ResponseEntity<>(userService.findByEmail(principal.getName()), HttpStatus.OK);
     }
-
 }
