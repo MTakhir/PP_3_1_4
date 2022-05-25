@@ -18,8 +18,9 @@ fetch(url1)
     })
 
 //Admin Panel
-let table = ""
+
 const showTable = (users) => {
+    let table = document.getElementById("tableAllUsers").innerHTML
     users.forEach((user)=> {
         table += `
                 <tr id="${user.id}">
@@ -54,6 +55,15 @@ const on = (element, event, selector, handler) => {
 }
 
 //Add new user
+newUserLink.addEventListener('click', (e) => {
+    firstName.value = ''
+    lastName.value = ''
+    age.value = ''
+    email.value = ''
+    pass.value = ''
+    roles.value = null
+})
+
 newUserForm.addEventListener('submit', (e) => {
     e.preventDefault()
     let id = 0
@@ -91,6 +101,7 @@ newUserForm.addEventListener('submit', (e) => {
 })
 
 //Edit Modal
+
 on(document, 'click', '.eBtn', e => {
     const lineEdit = e.target.parentNode.parentNode
     const idEditModal = lineEdit.children[0].innerHTML
@@ -136,12 +147,12 @@ editModal.addEventListener('submit', (e) => {
         body: JSON.stringify(editUser)
     })
         .then(response => response.json())
-        .then(data => {
+        .then((data) => {
             const editUserInTable = []
             editUserInTable.push(data)
             showTable(editUserInTable)
         })
-        .then(()=> document.getElementById(idEdit.value).remove())
+        .then(() => document.getElementById(idEdit.value).remove())
         .then(()=> document.getElementById('editModalClose').click())
 })
 
