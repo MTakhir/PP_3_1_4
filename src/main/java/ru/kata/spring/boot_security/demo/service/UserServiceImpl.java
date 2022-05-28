@@ -37,20 +37,6 @@ public class UserServiceImpl implements UserService {
         userDao.save(user);
     }
 
-    @Transactional
-    @Override
-    public void addUser(User user, String[] roles, String pass) {
-        user.setPassword(passwordEncoder.encode(pass));
-        user.setRoles(Arrays.stream(roles)
-                .map(role -> roleService.findByRole(role))
-                .collect(Collectors.toList()));
-        userDao.save(user);
-    }
-    @Override
-    public User findUser(int id) {
-        return userDao.findUser(id);
-    }
-
     @Override
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
@@ -68,6 +54,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(int id) {
         userDao.delete(id);
+    }
+
+    @Override
+    public boolean exist(String email) {
+        return userDao.exist(email);
     }
 
 }

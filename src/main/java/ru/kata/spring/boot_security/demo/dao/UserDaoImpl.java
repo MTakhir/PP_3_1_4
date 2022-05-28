@@ -32,11 +32,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findUser(int id) {
-        return entityManager.find(User.class, id);
-    }
-
-    @Override
     public void update(User user) {
         entityManager.merge(user);
     }
@@ -45,5 +40,15 @@ public class UserDaoImpl implements UserDao {
     public void delete(int id) {
         User user = entityManager.find(User.class, id);
         entityManager.remove(user);
+    }
+
+    @Override
+    public boolean exist(String email) {
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = : e");
+        query.setParameter("e", email);
+        if (((org.hibernate.query.Query)query).list().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

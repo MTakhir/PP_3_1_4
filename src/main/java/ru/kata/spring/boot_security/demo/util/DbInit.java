@@ -8,6 +8,8 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DbInit {
@@ -22,15 +24,32 @@ public class DbInit {
 
     @PostConstruct
     private void postConstruct() {
-        roleService.save(new Role("ROLE_ADMIN"));
-        roleService.save(new Role("ROLE_USER"));
+        Role adminRole = new Role("ROLE_ADMIN");
+        Role userRole = new Role("ROLE_USER");
 
-        String[] rolesAdmin = {"ROLE_ADMIN", "ROLE_USER"};
-        userService.addUser(new User("admin", "admin", 42, "admin"),
-                rolesAdmin, "admin");
+        if(!roleService.exist(adminRole.getAuthority())) {
+            roleService.save(adminRole);
+        }
 
-        String[] rolesUser = {"ROLE_USER"};
-        userService.addUser(new User("user", "user", 42, "user"),
-                rolesUser, "user");
+        if(!roleService.exist(userRole.getAuthority())) {
+            roleService.save(userRole);
+        }
+
+        if (!userService.exist("admin")) {
+            List<Role> adminRolesList = new ArrayList<>();
+            adminRolesList.add(adminRole);
+            adminRolesList.add(userRole);
+            User admin = new User("admin", "admin", 42, "admin",
+                    "admin",adminRolesList);
+            userService.save(admin);
+        }
+
+        if (!userService.exist("user")) {
+            List<Role> userRolesList = new ArrayList<>();
+            userRolesList.add(userRole);
+            User user = new User("user", "user", 42, "user",
+                    "user", userRolesList);
+            userService.save(user);
+        }
     }
 }

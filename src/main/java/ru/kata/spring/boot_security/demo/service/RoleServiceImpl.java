@@ -26,4 +26,9 @@ public class RoleServiceImpl implements RoleService{
     public void save(Role role) {
         roleDao.save(role);
     }
+
+    @Override
+    public boolean exist(String role) {
+        return roleDao.exist(role);
+    }
 }
