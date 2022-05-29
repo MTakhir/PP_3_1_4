@@ -1,10 +1,11 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,17 +16,21 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "first_name")
     private String firstName;
+
     @Column(name = "last_name")
     private String lastName;
+
     @Column(name = "age")
     private int age;
+
     @Column(name = "email", unique = true)
     private String email;
+
     @Column(name = "password")
     private String password;
-    @Column(name = "roles")
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
