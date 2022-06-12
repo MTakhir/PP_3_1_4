@@ -24,7 +24,6 @@ public class DbInit {
 
     @PostConstruct
     private void postConstruct() {
-
         if(!roleService.exist("ROLE_ADMIN")) {
             Role adminRole = new Role("ROLE_ADMIN");
             roleService.save(adminRole);
@@ -35,19 +34,19 @@ public class DbInit {
             roleService.save(userRole);
         }
 
-        if (!userService.exist("admin")) {
+        if (!userService.exist("admin@mail.ru")) {
             List<Role> adminRolesList = new ArrayList<>();
             adminRolesList.add(roleService.findByRole("ROLE_ADMIN"));
             adminRolesList.add(roleService.findByRole("ROLE_USER"));
-            User admin = new User("admin", "admin", 42, "admin",
+            User admin = new User("admin", "admin", 42, "admin@mail.ru",
                     "admin",adminRolesList);
             userService.save(admin);
         }
 
-        if (!userService.exist("user")) {
+        if (!userService.exist("user@mail.ru")) {
             List<Role> userRolesList = new ArrayList<>();
             userRolesList.add(roleService.findByRole("ROLE_USER"));
-            User user = new User("user", "user", 42, "user",
+            User user = new User("user", "user", 42, "user@mail.ru",
                     "user", userRolesList);
             userService.save(user);
         }
