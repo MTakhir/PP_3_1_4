@@ -5,7 +5,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.util.HtmlUtils;
 import ru.kata.spring.boot_security.demo.model.Message;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -29,9 +28,10 @@ public class ChatController {
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
-    public Message greeting(Principal principal) {
+    public Message greeting(Principal principal, Message message) {
         User user = userService.findByEmail(principal.getName());
-        return new Message("Hello, " + user.getFirstName() +" " + user.getLastName() + "!");
+        message.setFromUserName(user.getLastName());
+        return message;
     }
 
 }
