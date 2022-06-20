@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.model.Chat;
 import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 
@@ -59,4 +60,8 @@ public class UserServiceImpl implements UserService {
         return userDao.exist(email);
     }
 
+    @Override
+    public List<Chat> getUsersChat(int id) {
+        return userDao.getUsersChat(id);
+    }
 }

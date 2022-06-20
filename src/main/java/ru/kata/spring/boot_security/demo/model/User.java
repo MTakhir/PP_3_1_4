@@ -49,6 +49,9 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
+    @ManyToMany
+    private List<Chat> chatList;
+
     public User() {
     }
 

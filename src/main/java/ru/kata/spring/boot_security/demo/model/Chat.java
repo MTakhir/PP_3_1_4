@@ -12,10 +12,10 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany
+    @ManyToMany(mappedBy = "chatList")
     private List<User> subscribers;
 
-    @OneToMany
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messageList;
 
 }

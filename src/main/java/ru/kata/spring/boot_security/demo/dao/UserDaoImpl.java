@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Repository;
+import ru.kata.spring.boot_security.demo.model.Chat;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
@@ -50,5 +51,15 @@ public class UserDaoImpl implements UserDao {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Chat> getUsersChat(int id) {
+        Query query = entityManager.createQuery("SELECT u.chatList FROM User u WHERE u.id = : i");
+        query.setParameter("i", id);
+        if (((org.hibernate.query.Query)query).list().isEmpty()) {
+            return null;
+        }
+        return query.getResultList();
     }
 }
